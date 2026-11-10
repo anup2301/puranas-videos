@@ -1,0 +1,5 @@
+work/
+out/
+node_modules/
+.cache/
+*.wav

@@ -1,0 +1,46 @@
+name: Daily Purana stories
+on:
+  schedule:
+    - cron: '45 14 * * *'        # 20:15 IST: render both languages, then publish at 21:00 IST
+  workflow_dispatch:
+    inputs:
+      story: { description: 'Story id (blank = next pending)', required: false, default: '' }
+      dry_run: { description: 'Render only, post nothing', type: boolean, default: true }
+permissions:
+  contents: write
+concurrency: purana-daily
+jobs:
+  make:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      FACELESS_HOME: ${{ github.workspace }}/.cache
+      CHROME: /usr/bin/google-chrome
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: sudo apt-get update -y && sudo apt-get install -y ffmpeg
+      - run: pip install numpy scipy kokoro-onnx
+      - run: npm i --no-save playwright-core
+      - uses: actions/cache@v4
+        with: { path: .cache/kokoro, key: kokoro-v1 }
+      - run: python scripts/voice.py --download
+      - name: Make and post
+        env:
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          STORY: ${{ github.event.inputs.story }}
+          DRY: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run || (vars.PUBLISH == 'true' && 'false' || 'true') }}
+        run: |
+          ARGS=""
+          [ -n "$STORY" ] && ARGS="$ARGS --story $STORY"
+          [ "$DRY" = "true" ] && ARGS="$ARGS --dry-run"
+          python scripts/run_daily.py $ARGS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: rendered, path: out/, if-no-files-found: ignore }

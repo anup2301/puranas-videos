@@ -1,0 +1,10 @@
+{
+ "publish_time_ist": "21:00",
+ "stories": [
+  {
+   "id": "002-prahlada-2",
+   "status": "done",
+   "note": "Already posted by hand on 2026-11-09. Kept as the pipeline test story (use --story 002-prahlada-2 --dry-run)."
+  }
+ ]
+}
