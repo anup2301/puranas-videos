@@ -1,15 +1,10 @@
 # One-time setup (all free)
 
-Everything runs in GitHub Actions at **20:15 IST** (render both languages) and **posts at 21:00 IST**, English first, then Hindi.
+Everything runs in GitHub Actions at **20:15 IST** (render) and **posts at 21:00 IST**. English only for now (Hindi is paused: `languages` in `queue.json`).
 If anything is blocked, the job fails and GitHub emails you the reason (make sure Actions failure emails are on: GitHub > Settings > Notifications).
 
-## 0. Activate the workflow (one time)
-GitHub does not let a normal access token create workflow files. Either:
-- (easiest) In the repo on github.com: Add file > Create new file, name it `.github/workflows/daily.yml`, paste the contents of `setup/daily.yml`, commit; or
-- create a new fine-grained token for this repo with permissions Contents: read/write, **Workflows: read/write**, Actions: read/write, and give it to Claude (in a chat), who can then add the file and start test runs.
-
 ## 1. Test the renderer (no accounts needed)
-Actions tab > "Daily Purana stories" > Run workflow > story `002-prahlada-2`, dry_run = true. After ~15 minutes open the run and download the `rendered` artifact (English and Hindi MP4 + thumbnails). Nothing is posted.
+Actions tab > "Daily Purana stories" > Run workflow > story `002-prahlada-2`, dry_run = true. After ~15 minutes open the run and download the `rendered` artifact (MP4 + thumbnail). Nothing is posted.
 
 ## 2. Facebook Page + Instagram Reels (free, direct API)
 1. developers.facebook.com > My Apps > Create App (type Business). Add the Facebook Login product if asked. Keep the app in Development mode (works for your own Page and Instagram because you are the app admin).
@@ -23,10 +18,10 @@ Meta changes its screens and permission names often. If a step differs, tell Cla
 The pipeline writes `media/latest.json` plus `latest-en.mp4`, `latest-hi.mp4`, `thumb-en.png`, `thumb-hi.png` to this repo before 21:00 IST.
 Create one Zap on zapier.com:
 - Trigger: **Schedule by Zapier**, every day at 9:00 PM (your time zone: Asia/Kolkata).
-- Action 1: **Code by Zapier** (Run Python): fetch `https://raw.githubusercontent.com/anup2301/puranas-videos/main/media/latest.json` with `requests`, return `en_title, en_description, en_video, hi_title, hi_description, hi_video` (plus tags). 
-- Action 2: **YouTube > Upload Video** (English): video URL = `en_video`, title, description, Privacy = Public, Category = Education, Made for kids = No.
-- Action 3: **YouTube > Upload Video** (Hindi), same with the `hi_` fields.
-Free Zapier plan = 100 tasks/month. This Zap uses 3 tasks a day = ~90 a month, so it fits only if nothing else uses Zapier (thumbnails would need 2 more tasks a day: set thumbnails in YouTube Studio by hand from the `thumb-*.png` files, or upgrade). Check zapier.com/pricing, plans change.
+- Action 1: **Code by Zapier** (Run Python): fetch `https://raw.githubusercontent.com/anup2301/puranas-videos/main/media/latest.json` with `requests`, return `en_title, en_description, en_video, en_thumbnail` (and tags).
+- Action 2: **YouTube > Upload Video**: video URL = `en_video`, title, description, Privacy = Public, Category = Education, Made for kids = No.
+- Action 3: **YouTube > Update Video Thumbnail**: video id from action 2, thumbnail = `en_thumbnail`.
+Free Zapier plan = 100 tasks/month. This Zap uses 3 tasks a day = about 90 a month (English only), so it fits as long as nothing else uses your Zapier tasks (so I cannot also post by chat on the same account). Check zapier.com/pricing, plans change.
 Alternative, fully free but slower to start: apply for Google's YouTube API compliance audit, then add secrets `YT_CLIENT_ID`, `YT_CLIENT_SECRET`, `YT_REFRESH_TOKEN` and the pipeline uploads (with thumbnails) by itself. Until the audit passes, API uploads are locked private.
 
 ## 4. Switch on daily posting

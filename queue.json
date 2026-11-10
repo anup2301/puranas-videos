@@ -6,5 +6,9 @@
    "status": "done",
    "note": "Already posted by hand on 2026-11-09. Kept as the pipeline test story (use --story 002-prahlada-2 --dry-run)."
   }
- ]
+ ],
+ "languages": [
+  "en"
+ ],
+ "note_languages": "Hindi paused by the owner. Add 'hi' to languages to resume (story packages keep their Hindi files)."
 }

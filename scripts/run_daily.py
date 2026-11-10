@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Daily Purana story pipeline (free, runs in GitHub Actions or on any computer).
 
-  python scripts/run_daily.py                    next pending story: render EN + HI, wait for 21:00 IST, publish
+  python scripts/run_daily.py                    next pending story: render the languages in queue.json, wait for 21:00 IST, publish
   python scripts/run_daily.py --dry-run          render only (nothing is posted or committed)
   python scripts/run_daily.py --story ID --only en --dry-run
 
@@ -69,7 +69,7 @@ def main():
     else:
         entry = next((s for s in q['stories'] if s['status'] == 'pending'), None)
         if not entry: sys.exit('QUEUE EMPTY: no pending story in queue.json. Ask Claude to write the next batch of stories.')
-    story = json.loads((ROOT / 'stories' / entry['id'] / 'story.json').read_text()); langs = [a.only] if a.only else ['en', 'hi']
+    story = json.loads((ROOT / 'stories' / entry['id'] / 'story.json').read_text()); langs = [a.only] if a.only else q.get('languages', ['en'])
     files = {lang: build(story, lang) for lang in langs}
     out = ROOT / 'out' / story['id']; out.mkdir(parents=True, exist_ok=True)
     for lang, (mp4, png) in files.items(): shutil.copy(mp4, out / f'{lang}.mp4'); shutil.copy(png, out / f'{lang}.png')
