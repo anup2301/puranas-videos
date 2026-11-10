@@ -3,6 +3,11 @@
 Everything runs in GitHub Actions at **20:15 IST** (render both languages) and **posts at 21:00 IST**, English first, then Hindi.
 If anything is blocked, the job fails and GitHub emails you the reason (make sure Actions failure emails are on: GitHub > Settings > Notifications).
 
+## 0. Activate the workflow (one time)
+GitHub does not let a normal access token create workflow files. Either:
+- (easiest) In the repo on github.com: Add file > Create new file, name it `.github/workflows/daily.yml`, paste the contents of `setup/daily.yml`, commit; or
+- create a new fine-grained token for this repo with permissions Contents: read/write, **Workflows: read/write**, Actions: read/write, and give it to Claude (in a chat), who can then add the file and start test runs.
+
 ## 1. Test the renderer (no accounts needed)
 Actions tab > "Daily Purana stories" > Run workflow > story `002-prahlada-2`, dry_run = true. After ~15 minutes open the run and download the `rendered` artifact (English and Hindi MP4 + thumbnails). Nothing is posted.
 
