@@ -11,7 +11,7 @@ Actions tab > "Daily Purana stories" > Run workflow > story `002-prahlada-2`, dr
 2. Your Instagram must be a Business/Professional account linked to your Facebook Page (you already did this).
 3. Tools > Graph API Explorer. Pick your app. Click "Get User Access Token" and tick: `pages_show_list`, `pages_read_engagement`, `pages_manage_posts`, `publish_video`, `instagram_basic`, `instagram_content_publish`, `business_management`. Choose your Page when asked. Copy the token.
 4. On your computer: `python scripts/meta_token.py APP_ID APP_SECRET THAT_TOKEN`. It prints your Page id, your Instagram business id and a long-lived PAGE token.
-5. GitHub repo > Settings > Secrets and variables > Actions > New repository secret: `FB_PAGE_TOKEN` = the page token. (Page id `1478060802048084` and Instagram id `17841466147205405` are already the defaults; if the helper prints different ids, add secrets `FB_PAGE_ID` / `IG_USER_ID`.)
+5. GitHub repo > Settings > Secrets and variables > Actions > New repository secret: `FB_PAGE_TOKEN` = the page token. (The Page id and Instagram id are read from the token automatically; you do not need to add them.)
 Meta changes its screens and permission names often. If a step differs, tell Claude what you see.
 
 ## 3. YouTube (free Zapier Zap; direct API uploads stay private until Google audits the project)

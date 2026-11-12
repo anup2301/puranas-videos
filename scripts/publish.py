@@ -1,13 +1,22 @@
 """Posting to Facebook Page + Instagram Reels (Meta Graph API, free) and, optionally, YouTube (direct API).
 
 Secrets (GitHub: Settings > Secrets and variables > Actions):
-  FB_PAGE_TOKEN   long-lived Page access token       FB_PAGE_ID  (default below)       IG_USER_ID  (default below)
+  FB_PAGE_TOKEN   long-lived Page access token (Page and Instagram ids are read from it automatically)
   YT_CLIENT_ID, YT_CLIENT_SECRET, YT_REFRESH_TOKEN   only for direct YouTube upload (see SETUP.md; needs Google's audit to be public)
 YouTube is normally posted by a free Zapier Zap that reads media/latest.json (see SETUP.md).
 """
 import json, os, time, urllib.request, urllib.parse, urllib.error
 GRAPH = 'https://graph.facebook.com/v21.0'; GRAPH_VIDEO = 'https://graph-video.facebook.com/v21.0'
-PAGE_ID = os.environ.get('FB_PAGE_ID', '1478060802048084'); IG_ID = os.environ.get('IG_USER_ID', '17841466147205405')
+
+def ids(tok):
+    """Page id and Instagram business id come from the token itself (optional overrides: secrets FB_PAGE_ID, IG_USER_ID)."""
+    q = urllib.parse.quote(tok)
+    page = os.environ.get('FB_PAGE_ID') or call(f'{GRAPH}/me?fields=id&access_token={q}')['id']
+    ig = os.environ.get('IG_USER_ID')
+    if not ig:
+        ig = (call(f'{GRAPH}/{page}?fields=instagram_business_account&access_token={q}').get('instagram_business_account') or {}).get('id')
+        if not ig: raise RuntimeError('No Instagram Business account is linked to this Facebook Page')
+    return page, ig
 
 def call(url, data=None, method=None):
     body = urllib.parse.urlencode(data).encode() if data is not None else None
@@ -20,13 +29,15 @@ def call(url, data=None, method=None):
 def facebook(story, lang, meta):
     tok = os.environ.get('FB_PAGE_TOKEN')
     if not tok: raise RuntimeError('MISSING SECRET FB_PAGE_TOKEN (see SETUP.md step 3)')
-    r = call(f'{GRAPH_VIDEO}/{PAGE_ID}/videos', {'file_url': meta['video_url'], 'title': meta['title'], 'description': story[lang]['facebook'], 'access_token': tok})
+    page, _ = ids(tok)
+    r = call(f'{GRAPH_VIDEO}/{page}/videos', {'file_url': meta['video_url'], 'title': meta['title'], 'description': story[lang]['facebook'], 'access_token': tok})
     return r.get('id')
 
 def instagram(story, lang, meta):
     tok = os.environ.get('FB_PAGE_TOKEN')
     if not tok: raise RuntimeError('MISSING SECRET FB_PAGE_TOKEN (see SETUP.md step 3)')
-    c = call(f'{GRAPH}/{IG_ID}/media', {'media_type': 'REELS', 'video_url': meta['video_url'], 'caption': story[lang]['instagram'], 'share_to_feed': 'true', 'access_token': tok})['id']
+    _, ig = ids(tok)
+    c = call(f'{GRAPH}/{ig}/media', {'media_type': 'REELS', 'video_url': meta['video_url'], 'caption': story[lang]['instagram'], 'share_to_feed': 'true', 'access_token': tok})['id']
     for _ in range(60):
         s = call(f'{GRAPH}/{c}?fields=status_code,status&access_token={urllib.parse.quote(tok)}')
         print('instagram processing:', s.get('status_code'), flush=True)
@@ -34,7 +45,7 @@ def instagram(story, lang, meta):
         if s.get('status_code') in ('ERROR', 'EXPIRED'): raise RuntimeError(f'Instagram rejected the video: {s}')
         time.sleep(10)
     else: raise RuntimeError('Instagram processing timed out')
-    return call(f'{GRAPH}/{IG_ID}/media_publish', {'creation_id': c, 'access_token': tok}).get('id')
+    return call(f'{GRAPH}/{ig}/media_publish', {'creation_id': c, 'access_token': tok}).get('id')
 
 def youtube(story, lang, meta):
     cid, sec, ref = (os.environ.get(k) for k in ('YT_CLIENT_ID', 'YT_CLIENT_SECRET', 'YT_REFRESH_TOKEN'))
