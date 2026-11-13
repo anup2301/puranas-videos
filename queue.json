@@ -5,6 +5,11 @@
    "id": "002-prahlada-2",
    "status": "done",
    "note": "Already posted by hand on 2026-11-09. Kept as the pipeline test story (use --story 002-prahlada-2 --dry-run)."
+  },
+  {
+   "id": "003-dhruva-1",
+   "status": "pending",
+   "note": "The Boy Who Refused to Accept It - Part 1 of 2. Bhagavata Purana, Canto 4."
   }
  ],
  "languages": [

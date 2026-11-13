@@ -1,0 +1,24 @@
+{
+  "title": "The Boy Who Refused to Accept It | Dhruva Part 1 of 2",
+  "voice": "bm_fable",
+  "speed": 0.98,
+  "lead": 0.4,
+  "outro": 1.0,
+  "gap": 0.32,
+  "music": "bed",
+  "sources": ["Bhagavata Purana, Canto 4, chapters 8-9."],
+  "lines": [
+    { "text": "A king had two wives. One was loved. One was forgotten.", "caps": "A king had *two wives. | One *loved. | One *forgotten." },
+    { "text": "The forgotten wife had a son. His name was Dhruva.", "caps": "The forgotten wife | had a *son. | His name was *Dhruva." },
+    { "text": "One day, the five-year-old climbed onto his father's lap.", "caps": "Five years old, | he climbed his | *father's lap." },
+    { "text": "His stepmother pulled him off. You were not born from me. You have no right to that seat.", "caps": "His stepmother | *pulled him off. | You have no *right | to that *seat." },
+    { "text": "His father watched. And said nothing.", "caps": "His *father watched. | And said *nothing." },
+    { "text": "Dhruva ran to his mother, tears on his face.", "caps": "Dhruva ran | to his *mother." },
+    { "text": "She said: there is one seat no one can ever take from you. Find Vishnu.", "caps": "One *seat | no one can | *take from you. | Find *Vishnu." },
+    { "text": "The five-year-old walked into the forest. Alone.", "caps": "Five years old. | Into the *forest. | *Alone." },
+    { "text": "Sage Narada found him and asked: why are you here, child?", "caps": "Sage *Narada | found him. | Why are you *here?" },
+    { "text": "Dhruva said: I want what cannot be taken away.", "caps": "I want what | cannot be *taken away." },
+    { "text": "Narada tried to send him home. The boy did not move.", "caps": "Narada tried | to send him *home. | The boy did | not *move." },
+    { "text": "Part two tomorrow: what a five-year-old taught the gods. Follow for more stories.", "caps": "What a five-year-old | *taught the gods. | Follow for | *more stories." }
+  ]
+}
