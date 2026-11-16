@@ -1,6 +1,9 @@
 # One-time setup (all free)
 
-Everything runs in GitHub Actions at **20:15 IST** (render) and **posts at 21:00 IST**. English only for now (Hindi is paused: `languages` in `queue.json`).
+**How timing works (changed 2026-11-16):** GitHub's schedule is unreliable (it started the runs 5-6 hours late), so it no longer decides when to post. Zapier's 9:00 PM schedule is the only clock:
+1. GitHub (any time of day) *stages* the next video in `media/` (mode `stage`).
+2. At 9:00 PM IST the Zap uploads it to YouTube and also tells GitHub to run mode `post`, which posts the same video to Facebook + Instagram, marks it done and stages the next one.
+English only for now (Hindi is paused: `languages` in `queue.json`).
 If anything is blocked, the job fails and GitHub emails you the reason (make sure Actions failure emails are on: GitHub > Settings > Notifications).
 
 ## 1. Test the renderer (no accounts needed)
@@ -29,3 +32,15 @@ Repo > Settings > Secrets and variables > Actions > Variables > New variable `PU
 
 ## 5. Feeding the queue
 `queue.json` lists story ids in order; the daily job posts the first `pending` one and marks it `done`. When the queue is empty the job fails with "QUEUE EMPTY" (you get an email): ask Claude for the next batch. Claude writes each story as a folder `stories/<id>/` (story.json, script.en.json, script.hi.json, shots.js), checks the facts against sources, and adds the id to the queue. A series posts one part per day.
+
+## 6. The Zap's dispatch (exact 9:00 PM posting to Facebook + Instagram)
+Create a fine-grained GitHub token for ONLY this repo with **Actions: Read and write** (nothing else). In the Zap's Code step, after computing `go`, add:
+```python
+import requests
+TOKEN = "PASTE_THE_FINE_GRAINED_TOKEN_HERE"
+if output["go"] == "yes":
+    requests.post("https://api.github.com/repos/anup2301/puranas-videos/actions/workflows/daily.yml/dispatches",
+        headers={"Authorization": "Bearer " + TOKEN, "Accept": "application/vnd.github+json"},
+        json={"ref": "main", "inputs": {"mode": "post"}})
+```
+Without this step nothing posts to Facebook/Instagram (unless the repo variable `POST_FROM_SCHEDULE` is `true`, which posts at whatever time GitHub happens to run, usually at night).

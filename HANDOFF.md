@@ -45,7 +45,10 @@ https://raw.githubusercontent.com/anup2301/puranas-videos/main/HANDOFF.md
 
 ---
 
-## Pipeline flow (each day)
+## Timing fix (2026-11-16) - READ THIS
+GitHub's cron ran 5-6 hours late (about 01:30-03:00 IST), and the old job waited for 9 PM and was cancelled after 150 minutes, so Facebook/Instagram never posted (3 nights) and the queue never advanced. Dhruva Part 1 IS on YouTube (uploaded by the Zap on 2026-11-14 21:00 IST, video id yGFEaR8kxfs, no duplicates). New design: GitHub only *stages* (mode `stage`); the Zap at 21:00 IST is the clock: it uploads to YouTube and dispatches the workflow with mode `post` (Facebook + Instagram, mark done, stage next). The dispatch step needs a fine-grained token (Actions read/write, this repo only) pasted in the Zap's Code step (see SETUP.md section 6). `media/latest.json` date was set to 2026-11-14 to stop a duplicate YouTube upload. Facebook/Instagram still lack Dhruva Part 1. Dhruva Part 2 is not written yet.
+
+## Pipeline flow (each day) - OLD description, superseded by the timing fix above
 1. GitHub Actions (8:15 PM IST): reads `queue.json`, finds first `pending` story
 2. Renders English MP4 + thumbnail (takes ~3 minutes)
 3. Writes `media/latest-en.mp4`, `media/thumb-en.png`, `media/latest.json` to repo

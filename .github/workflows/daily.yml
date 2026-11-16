@@ -1,18 +1,25 @@
 name: Daily Purana stories
 on:
   schedule:
-    - cron: '45 14 * * *'        # 20:15 IST: render both languages, then publish at 21:00 IST
+    - cron: '45 14 * * *'   # GitHub runs this late and unreliably; it only stages the next video, it does not decide posting time
   workflow_dispatch:
     inputs:
-      story: { description: 'Story id (blank = next pending)', required: false, default: '' }
-      dry_run: { description: 'Render only, post nothing', type: boolean, default: true }
+      mode:
+        description: 'stage = render next story into media/ | post = post staged story to Facebook + Instagram now, then stage the next | test = render a story, post nothing'
+        type: choice
+        options: [stage, post, test]
+        default: stage
+      story:
+        description: 'Story id (only for mode test)'
+        required: false
+        default: ''
 permissions:
   contents: write
 concurrency: purana-daily
 jobs:
   make:
     runs-on: ubuntu-latest
-    timeout-minutes: 150
+    timeout-minutes: 60
     env:
       FACELESS_HOME: ${{ github.workspace }}/.cache
       CHROME: /usr/bin/google-chrome
@@ -28,19 +35,24 @@ jobs:
       - uses: actions/cache@v4
         with: { path: .cache/kokoro, key: kokoro-v1 }
       - run: python scripts/voice.py --download
-      - name: Make and post
+      - name: Run
         env:
           FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          POST_FROM_SCHEDULE: ${{ vars.POST_FROM_SCHEDULE }}
+          MODE: ${{ github.event.inputs.mode || 'stage' }}
           STORY: ${{ github.event.inputs.story }}
-          DRY: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run || (vars.PUBLISH == 'true' && 'false' || 'true') }}
+          PUBLISH: ${{ vars.PUBLISH }}
         run: |
-          ARGS=""
-          [ -n "$STORY" ] && ARGS="$ARGS --story $STORY"
-          [ "$DRY" = "true" ] && ARGS="$ARGS --dry-run"
-          python scripts/run_daily.py $ARGS
+          if [ "$MODE" = "test" ]; then
+            python scripts/run_daily.py --story "${STORY:-002-prahlada-2}"
+          elif [ "$MODE" = "post" ] && [ "$PUBLISH" != "true" ]; then
+            echo "PUBLISH is not true: refusing to post"; exit 1
+          else
+            python scripts/run_daily.py --mode "$MODE"
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: rendered, path: out/, if-no-files-found: ignore }
