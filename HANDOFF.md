@@ -1,129 +1,68 @@
-# Handoff: Puranas Daily Pipeline
-*Last updated: 2026-11-13. Paste this into a new chat to resume without repeating history.*
+# HANDOFF: Puranas daily channel (read this fully before answering anything)
+*Updated 2026-11-16. Raw link for a new chat: https://raw.githubusercontent.com/anup2301/puranas-videos/main/HANDOFF.md*
 
----
+## 0. How the owner wants to work (most important)
+- The owner is tired of repeating himself. **Never ask for something already written here.** Start by acting on this file.
+- He wants **short, simple answers** (often "yes/no"), free tools only (no monthly fees), and everything automatic. Do the work; keep explanations brief.
+- Tell him plainly what is blocked and exactly which setting to change; he replies "done". Never claim something works unless it was tested.
+- Past mistakes to avoid: posting a series' Part 2 the same day; Hindi narration saying "bhag ek/do"; scripts that only list events (stories must explain); waiting for 9 PM inside a GitHub job; pasting tokens (see section 9).
+- He is in India (IST, UTC+5:30). Free Claude account (no Cowork/scheduled tasks).
 
-## Quick start for the new chat
-Say: **"Continue the Puranas daily pipeline. Read HANDOFF.md."**
-Then paste the contents of this file, or send the GitHub link:
-https://raw.githubusercontent.com/anup2301/puranas-videos/main/HANDOFF.md
+## 1. Goal
+A faceless YouTube/Facebook/Instagram channel telling one Purana story a day (English; Hindi is **paused** by the owner), as 40-60 s stick-figure shorts ("Divine Lines" style), posted automatically at 9:00 PM IST. Finish one Purana before the next (order in the puranas-daily skill, `references/books.md`; now on the **Bhagavata Purana**). Long stories become 2-3 parts, one part per day. Success is not guaranteed; the owner knows.
 
----
+## 2. Accounts (all under novamindpath.youtube@gmail.com)
+- YouTube channel "Novamind Path", id UCu_J8vkNE4ywrSUxHvAr61w (phone-verified, thumbnails allowed).
+- Facebook Page "NovamindPath", id 1478060802048084. Instagram @nova_mind_path, id 17841466147205405 (Business, linked to that Page).
+- Meta developer app "Puranas Poster" (Development mode, business portfolio NovamindPath). `FB_PAGE_TOKEN` (long-lived Page token) is a GitHub repo secret; the Check Meta token job passed.
+- GitHub repo (public): **anup2301/puranas-videos**. Repo variable `PUBLISH=true` is set.
+- Zapier (free plan, connections for YouTube, Drive, Sheets, Instagram, Facebook; the old Facebook/Instagram connections can't see the Page, use connection ids 0217e23f-2b6b-8580-a410-03716ab748ef (Facebook) and 02035eee-19c4-8d75-a956-91865826e9ca (Instagram) if posting by Zapier).
 
-## What exists
+## 3. What is live on YouTube (all public, thumbnails set)
+Intro BAXGfrFZ1wI · Prahlada Part 1 EN txtfJe34PHw · Part 2 EN ZJW7oSFpmNY · Hindi Part 1 ONsHqptjflQ · Hindi Part 2 A5vw6Kq6pNQ (owner will delete the Hindi ones himself) · **Dhruva Part 1 yGFEaR8kxfs** (posted by the Zap on 2026-11-14 21:00 IST). Early views: intro ~388, Prahlada P1 EN ~331, P2 EN ~132, Hindi 5-12.
+Facebook and Instagram have: intro, Prahlada P1/P2 EN, Hindi P1/P2. **They do NOT have Dhruva Part 1** (the daily job never posted, see section 5).
 
-### YouTube channel
-- **Channel:** NovamindPath (novamindpath.youtube@gmail.com)
-- **Videos live:** Channel intro, Prahlada Part 1 & 2 (English), Hindi Part 1 & 2 (owner to delete Hindi ones)
-- **Thumbnails:** set on all 5 videos. Phone-verified.
+## 4. The repo (everything runs from here)
+- `engine/` renderer (headless Chrome + ffmpeg, Kokoro voice `bm_fable`, procedural sound). `engine/src/core/kit.js` = characters/props/scenes/captions.
+- `stories/<id>/` = story.json, script.en.json (script.hi.json optional), shots.js. Model: `stories/002-prahlada-2/shots.js`, `stories/003-dhruva-1/`.
+- `queue.json` = order + status (`pending`/`done`) + `languages: ["en"]`.
+- `scripts/run_daily.py --mode stage|post|auto`, `scripts/publish.py` (Facebook + Instagram Graph API; YouTube direct API only if `YT_*` secrets exist), `scripts/check_meta.py`, `scripts/render_thumb.mjs`, `scripts/voice.py`, `scripts/gen_words.py`, `scripts/meta_token.py`.
+- Workflows: `.github/workflows/daily.yml` (modes stage/post/test; cron 14:45 UTC only stages) and `check_meta.yml` (no-post token check).
+- `media/latest.json` + `latest-en.mp4` + `thumb-en.png` = the staged video the Zap uploads. Its `date` (IST) is the day the Zap will upload it. **Currently set to 2026-11-14 on purpose** (so Dhruva Part 1 is not uploaded twice).
+- `SETUP.md` = setup steps. Test a render any time: Actions > Daily Purana stories > Run workflow > mode `test` (renders in ~2.5 min, posts nothing).
 
-### GitHub repo: `anup2301/puranas-videos`
-- **Purpose:** daily automated story pipeline. Renders at 8:15 PM IST, posts at 9:00 PM IST.
-- **Workflow:** `.github/workflows/daily.yml` (scheduled `cron: '45 14 * * *'`)
-- **Queue file:** `queue.json` — `PUBLISH=true` variable is set. First pending story: `003-dhruva-1`.
-- **Engine:** `engine/` — Divine Lines style (white paper, ink stick figures, gold for gods, red for demons, 1080x1920 30fps)
-- **Scripts:** `scripts/run_daily.py` (orchestrator), `scripts/publish.py` (Facebook + Instagram + optional YouTube API), `scripts/voice.py` (Kokoro English TTS), `scripts/gen_words.py` (caption timing), `scripts/render_thumb.mjs` (1280x720 thumbnail)
-- **Stories:** `stories/<id>/` — story.json, script.en.json, shots.js
-- **Setup guide:** `SETUP.md`
+## 5. The timing problem (found 2026-11-16) and the current design
+GitHub ran the scheduled job 5-6 hours late every night (about 01:30-03:00 IST). The old job then waited for 21:00 IST and GitHub cancelled it after 150 min, so Facebook/Instagram never posted and the queue never advanced (3 nights). Fix pushed: GitHub no longer waits. **Mode `stage`** renders the next pending story into `media/`. **Mode `post`** posts the staged story to Facebook + Instagram immediately, marks it done, then stages the next. **A scheduler outside GitHub must trigger `post` at 21:00 IST and upload to YouTube**: today that is the Zapier Zap. The `post` mode has never run for real yet (untested).
 
-### Social accounts (all novamindpath.youtube@gmail.com)
-- **YouTube:** connected via Zapier (upload + thumbnail in one step)
-- **Facebook Page:** NovamindPath, id `1478060802048084`, connected via `FB_PAGE_TOKEN` secret
-- **Instagram:** @nova_mind_path, id `17841466147205405`, same `FB_PAGE_TOKEN`
+## 6. DECISION PENDING: which scheduler (owner wants no monthly cost)
+Options verified on 2026-11-16:
+1. **Keep the Zap (Zapier free plan, $0, 100 tasks/month).** The Zap = Schedule 21:00 Asia/Kolkata > Code by Zapier (Python; fetches media/latest.json, outputs go/title/description/video/thumb; add the GitHub dispatch call from SETUP.md section 6) > Filter go=yes > YouTube Upload Video (with thumbnail). ~3 tasks/day (~90/month); Claude must not spend Zapier tasks in chats. It works (uploaded Dhruva P1). The owner said Zapier "charges money": check Zapier billing; it should be on the Free plan.
+2. **Make.com free plan** (1,000 credits/month, 2 scenarios, 15-minute minimum schedule interval, reported 5 MB file limit, 5 min run limit). Make uses its own approved YouTube app so public uploads should work. Needs videos under 5 MB (stick-figure video compresses well; test). Not built or tested.
+3. **n8n in Docker (self-hosted, free).** Exact 9 PM timing, Facebook/Instagram via Graph API fine. **But** YouTube upload via your own Google API project stays private until Google audits it (free, takes weeks), same as the direct API. Also needs a computer or free VM that is on at 9 PM. Not recommended unless the owner also wants to apply for the audit.
+Whatever scheduler: it needs (a) a fine-grained GitHub token (this repo only, Actions: read/write) to dispatch `post`, and (b) the YouTube upload step.
+Do NOT automate the YouTube website with a browser (against the rules).
 
-### Zapier Zap (free plan, ~90 tasks/month)
-- **Trigger:** Schedule, every day 9:00 PM Asia/Kolkata
-- **Step 2:** Code by Zapier (Python) — fetches `media/latest.json` from the repo
-- **Filter:** only continues if `go = yes` (today's date matches the file date)
-- **Step 4:** YouTube → Upload Video (title, description, video URL, thumbnail from step 2)
-- **Note:** Zapier free = 100 tasks/month. Don't use Zapier for other things in chat while this Zap is active.
+## 7. Story queue and what to write next
+| id | status |
+|---|---|
+| 002-prahlada-2 | done (test story) |
+| 003-dhruva-1 | staged, already on YouTube; needs Facebook/Instagram (owner to decide: post now or skip) |
+**Next to write: Dhruva Part 2** (the penance, Narada's mantra, Vishnu appears, the pole star; verify against Bhagavata Canto 4 ch. 8-12), then continue the Bhagavata queue (plan 20-30 stories with chapter refs: Gajendra, Ajamila, Vamana/Bali, Krishna stories...). The queue must never run empty (the job fails with "QUEUE EMPTY" and emails the owner).
 
-### Meta developer app
-- **App name:** Puranas Poster (NovamindPath business portfolio, unverified, Development mode)
-- **Use cases:** Manage messaging & content on Instagram + Manage everything on your Page
-- **Token type:** long-lived Page token (60-day), stored as `FB_PAGE_TOKEN` GitHub secret
+## 8. Story rules (never break)
+Start inside the story (no spoken "Part one"; part tag on screen only). Hook question first, then explain cause and effect, clear payoff, closing feeling. English ends "Follow for more stories." One part per day. Respect deities (traditional iconography, no mockery), cite Purana + chapter, say "in this telling" when versions differ, verify 5-8 facts from 2+ sources, retell in own words. No blood (flash/silhouette). First frame must be a strong cover. Thumbnails: 1280x720, hero on left, 3 lines of text with one gold line (config in story.json). YouTube: public, Education, not for kids, #shorts. Details: skill `puranas-daily` (zip in outputs; references/storytelling.md, repo-pipeline.md, bilingual.md).
 
----
+## 8b. Technical notes for the sandbox
+- Chrome is at /opt/pw-browsers/chromium-1243/chrome-linux64/chrome; Kokoro models download from GitHub; Whisper (Hugging Face) is blocked, so timing is estimated (gen_words.py). Hindi voice: `hm_omega` via scripts/voice.py (weak quality, paused).
+- The bash tool is `sh`: use `bash <<'EOF'` for brace expansion/heredocs. Long jobs must run in the foreground (background jobs get killed).
+- web_fetch only opens URLs the user pasted or that appeared in search; github raw works, logs download hosts do not resolve (job conclusions are visible via the API).
+- Instagram posts often answer "still processing" first; wait ~60 s and retry once (publish.py polls on its own).
+- Zapier: each MCP call = 2 tasks. Thumbnail action needs a phone-verified channel (done).
 
-## Timing fix (2026-11-16) - READ THIS
-GitHub's cron ran 5-6 hours late (about 01:30-03:00 IST), and the old job waited for 9 PM and was cancelled after 150 minutes, so Facebook/Instagram never posted (3 nights) and the queue never advanced. Dhruva Part 1 IS on YouTube (uploaded by the Zap on 2026-11-14 21:00 IST, video id yGFEaR8kxfs, no duplicates). New design: GitHub only *stages* (mode `stage`); the Zap at 21:00 IST is the clock: it uploads to YouTube and dispatches the workflow with mode `post` (Facebook + Instagram, mark done, stage next). The dispatch step needs a fine-grained token (Actions read/write, this repo only) pasted in the Zap's Code step (see SETUP.md section 6). `media/latest.json` date was set to 2026-11-14 to stop a duplicate YouTube upload. Facebook/Instagram still lack Dhruva Part 1. Dhruva Part 2 is not written yet.
+## 9. Security (owner must do)
+Several GitHub tokens were pasted into chats (a classic `ghp_` token with workflow scope and several fine-grained `github_pat_` tokens). **Revoke all of them** at github.com/settings/tokens once finished; Claude must never store them. For the scheduler create ONE new fine-grained token: this repo only, Actions: read/write only. The new chat should ask the owner to paste a token only when it truly needs one (e.g. to push files) and remind him to revoke it afterward.
 
-## Pipeline flow (each day) - OLD description, superseded by the timing fix above
-1. GitHub Actions (8:15 PM IST): reads `queue.json`, finds first `pending` story
-2. Renders English MP4 + thumbnail (takes ~3 minutes)
-3. Writes `media/latest-en.mp4`, `media/thumb-en.png`, `media/latest.json` to repo
-4. Waits until 9:00 PM IST
-5. Posts to Facebook Page and Instagram Reels via Meta Graph API
-6. Marks story `done` in `queue.json`, commits
-7. Zapier Zap (9:00 PM IST): reads `media/latest.json`, uploads to YouTube with thumbnail
-8. If anything fails → GitHub emails the owner
-
----
-
-## Story queue status
-| id | status | notes |
-|---|---|---|
-| 002-prahlada-2 | done | Prahlada & Narasimha Part 2 (posted manually 2026-11-09) |
-| 003-dhruva-1 | **pending** | The Boy Who Refused to Accept It — Part 1 of 2. Posting tonight (2026-11-13) |
-
-**Next to write:** Dhruva Part 2 (what a five-year-old taught the gods: the penance, Vishnu appears, Dhruva gets the pole star but wants something else). Then continue through the Bhagavata Purana queue.
-
----
-
-## Story writing rules (critical — never break these)
-- **One part per day.** Never post Part 2 on the same day as Part 1.
-- **Start inside the story.** No "Part one" spoken aloud. The part tag is on-screen only.
-- **English only for now.** Hindi is paused (owner's decision). Don't add Hindi unless owner says to resume.
-- **Hook first.** Open with a question or bold claim. Answer it scene by scene.
-- **End English with:** "Follow for more stories."
-- **Respect.** Deities drawn in traditional iconography. Cite Purana and chapter. Say "in this telling" when recensions differ.
-- **Violence:** flash/silhouette only. No blood.
-- **Source check:** verify 5-8 key facts before writing. Use Wisdomlib, vedabase.net, krishnakosh.org, sacred-texts.com.
-- **Book order:** finish all stories from one Purana before the next. Currently on **Bhagavata Purana** (Canto 4 Dhruva → then Gajendra, Vamana/Bali, Krishna stories, etc.)
-
----
-
-## Story package format
-Each story = folder `stories/<NNN-slug>/` with:
-- `story.json` — id, book, sources, `en.title`, `en.description` (YouTube), `en.tags`, `en.facebook`, `en.instagram`, `en.thumb` (bg/hero/lines/hi/size)
-- `script.en.json` — voice `bm_fable`, speed 0.98, lines with text + caps (`*word` = gold)
-- `shots.js` — bilingual template with `__HI__` placeholder (use `stories/002-prahlada-2/shots.js` as model: `tx(en,hi)` for on-screen text, `fr(i,f)` for timing, first frame = strong cover)
-
-Add id to `queue.json` as `{"id":"...", "status":"pending"}`.
-Push with the GitHub contents API or git.
-
----
-
-## Thumbnail format
-Config in `story.json` → `en.thumb`:
-```json
-{ "bg": "dark|light|dusk", "hero": "king|god|narasimha|human", "lines": ["LINE 1", "LINE 2", "LINE 3"], "hi": 2, "size": 108 }
-```
-Rendered by `scripts/render_thumb.mjs`. 1280x720. Big hero on the left, 3 lines of text on the right, gold line = `hi` index.
-
----
-
-## Character kit (engine/src/core/kit.js)
-- **God:** crown, gold halo + 12 rays, calm eyes, tilak, saffron dhoti, 4 arms (`ARMS.four`)
-- **Demon:** red horns, flame aura, slit eyes, fanged grin, crimson rags, `dark:true` on black bg
-- **Sage:** jata bun, ash halo, white beard, white wrap
-- **Human:** plain, no aura
-- Glow colours: Vishnu `#4C7FD6`, Shiva `#9AD1FF`, Devi `#E0457B`, gold default
-- Scenes: `K.heaven(t)`, `K.underworld(t)`, `K.ocean(t)`, `K.nightSky(t)`
-- Props: `K.lotus`, `K.chakra`, `K.trident`, `K.mace`, `K.flame`
-
----
-
-## GitHub tokens (REVOKE THESE)
-Two tokens were pasted in chat. Owner should revoke both at github.com/settings/tokens now that the pipeline is live. The daily job uses `FB_PAGE_TOKEN` and `PUBLISH` secrets only — no GitHub token is stored.
-
----
-
-## Channel growth notes
-- English videos avg ~350 views in first few days. Hindi near zero (paused).
-- Channel name "Novamind Path" doesn't say what the channel is. Consider renaming to "Purana Stories" or similar.
-- End each video with a question to drive comments.
-- Reply to comments in the first hour.
-- Use YouTube Studio retention graph to find drop-off points.
-- Post at exactly 9:00 PM IST every day for consistency.
-- Each series → pin a comment pointing to Part 2.
+## 10. First actions for the new chat
+1. Ask nothing already answered here. Say in one line what you understood and which of section 6's options the owner picks (default: keep Zapier free if it is $0).
+2. Write Dhruva Part 2 and add it to the queue (needs the owner's token once to push, or hand the files over as a zip).
+3. Get the scheduler dispatching `post` at 21:00 IST; then check the first real post (Facebook/Instagram untested).
