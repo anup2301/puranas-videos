@@ -1,0 +1,24 @@
+{
+  "title": "What a Five-Year-Old Did to the Gods | Dhruva Part 2 of 2",
+  "voice": "bm_fable",
+  "speed": 0.98,
+  "lead": 0.4,
+  "outro": 1.0,
+  "gap": 0.32,
+  "music": "bed",
+  "sources": ["Bhagavata Purana, Canto 4, chapters 8-9, 12."],
+  "lines": [
+    { "text": "What can a five-year-old do that makes the gods afraid?", "caps": "What can a *five-year-old | do that makes | the *gods afraid?" },
+    { "text": "Sage Narada tested him. Go home, child. This path is too hard.", "caps": "Narada *tested him. | Go home, child." },
+    { "text": "Dhruva refused. So Narada gave him a mantra for Vishnu, and sent him to a forest by the river Yamuna.", "caps": "A *mantra for Vishnu. | A forest by the *Yamuna." },
+    { "text": "He ate less each month. First fruit. Then leaves. Then water. Then only air.", "caps": "First *fruit. | Then *leaves. | Then *water. | Then only *air." },
+    { "text": "By the fifth month, he stood on one foot and stopped breathing. The earth began to lean.", "caps": "One *foot. | *No breath. | The *earth | began to lean." },
+    { "text": "The gods could not breathe. They ran to Vishnu for help.", "caps": "The *gods | could not *breathe. | They ran to *Vishnu." },
+    { "text": "Vishnu said: I will go to him myself.", "caps": "Vishnu said: | I will go *myself." },
+    { "text": "Dhruva was seeing Vishnu in his mind, when the vision vanished. He opened his eyes. And Vishnu stood in front of him.", "caps": "The vision *vanished. | He opened his *eyes. | Vishnu *stood there." },
+    { "text": "The boy could not speak. So Vishnu touched him with his conch, and the words poured out.", "caps": "Vishnu touched him | with his *conch. | And the *words came." },
+    { "text": "Vishnu promised him thirty-six thousand years as king, and a star that would never move.", "caps": "*36,000 years as king. | And a *star | that never moves." },
+    { "text": "But in this telling, Dhruva felt ashamed, like a beggar who asked an emperor for a few broken grains.", "caps": "He felt like a *beggar | who asked an *emperor | for *broken grains." },
+    { "text": "The boy who wanted a seat found one that no one can ever take. Follow for more stories.", "caps": "A seat *no one | can *take. | Follow for | *more stories." }
+  ]
+}
