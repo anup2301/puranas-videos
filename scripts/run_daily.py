@@ -94,6 +94,9 @@ def main():
         if staged().get('id') == entry['id']: print(f"already staged: {entry['id']} (post date {staged().get('date')})"); return
         prepare(entry, q, langs, after_posting=False); print('staged', entry['id']); return
     # mode == 'post': post the staged story right now (no waiting), then stage the next one
+    today = dt.datetime.now(IST).date().isoformat()
+    if staged().get('id') == entry['id'] and staged().get('date') != today and os.environ.get('FORCE_POST') != 'true':
+        print(f"nothing to post today: staged {entry['id']} is dated {staged().get('date')} and today is {today}. Skipping (one part per day)."); return
     if staged().get('id') != entry['id']: print('not staged yet: rendering first'); prepare(entry, q, langs, after_posting=False)
     story = json.loads((ROOT / 'stories' / entry['id'] / 'story.json').read_text()); meta = staged()
     sys.path.insert(0, str(ROOT / 'scripts')); import publish
