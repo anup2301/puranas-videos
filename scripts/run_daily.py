@@ -106,4 +106,30 @@ def main():
     if nxt: prepare(nxt[0], q, langs, after_posting=True); print('staged next:', nxt[0]['id'])
     else: print('QUEUE NOW EMPTY after this post: ask Claude for the next batch of stories.')
 
-if __name__ == '__main__': main()
+def run_logged():
+    import re, traceback
+    try:
+        main()
+        note = f'{dt.datetime.now(IST).isoformat()} OK'
+    except SystemExit as e:
+        note = f'{dt.datetime.now(IST).isoformat()} EXIT: {e.code}'
+        if e.code not in (0, None): log_and_fail(note, e)
+    except Exception as e:
+        note = f'{dt.datetime.now(IST).isoformat()} FAILED: {type(e).__name__}: {e}'
+        log_and_fail(note, e)
+    else:
+        write_log(note)
+
+def write_log(note):
+    import re
+    note = re.sub(r'(access_token=|token[=:]\s*)[A-Za-z0-9_\-]{12,}', r'\1[hidden]', note)
+    try:
+        (ROOT / 'logs').mkdir(exist_ok=True); (ROOT / 'logs' / 'last_run.txt').write_text(note[:4000] + '\n')
+        git('config', 'user.name', 'purana-bot'); git('config', 'user.email', 'purana-bot@users.noreply.github.com')
+        git('add', 'logs'); git('commit', '-m', 'run log', '--allow-empty'); git('pull', '--rebase', '-q'); git('push')
+    except Exception as ex: print('could not write log:', ex)
+
+def log_and_fail(note, exc):
+    print(f'::error::{note[:900]}', flush=True); write_log(note); raise SystemExit(1)
+
+if __name__ == '__main__': run_logged()
