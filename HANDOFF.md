@@ -8,6 +8,12 @@
 - Past mistakes to avoid: posting a series' Part 2 the same day; Hindi narration saying "bhag ek/do"; scripts that only list events (stories must explain); waiting for 9 PM inside a GitHub job; pasting tokens (see section 9).
 - He is in India (IST, UTC+5:30). Free Claude account (no Cowork/scheduled tasks).
 
+## 0b. STATUS 2026-11-20 (newest, read first)
+- Root cause of "nothing posted to Facebook/Instagram": **FB_PAGE_TOKEN expired on 2026-11-12 ("Session has expired")**. It was a short-lived Page token (the check job passed hours earlier, then it died). Every `post` run since failed; GitHub's email alerts did not reach the owner. Fix = make a Page token from a LONG-LIVED user token: Graph API Explorer > generate user token > developers.facebook.com/tools/debug/accesstoken > Extend Access Token > paste the extended token into the Explorer Access Token box > `me/accounts?fields=name,id,access_token` > copy NovamindPath's access_token > debugger must show "Expires: Never" > update GitHub secret FB_PAGE_TOKEN.
+- cron-job.org job exists (owner created it; POST to the GitHub dispatch API, 21:00, mode `post`). Its manual test at 2026-11-19 12:07 IST started the workflow, but **no run appears for 21:00 on Nov 19**: the owner must check cron-job.org > job > History and the job's time zone (must be Asia/Kolkata).
+- Errors are now written to `logs/last_run.txt` in the repo (read it at raw.githubusercontent.com/anup2301/puranas-videos/main/logs/last_run.txt).
+- Dhruva Part 1 (003) and Part 2 (004) are still `pending`; Part 1 never reached Facebook/Instagram.
+
 ## 1. Goal
 A faceless YouTube/Facebook/Instagram channel telling one Purana story a day (English; Hindi is **paused** by the owner), as 40-60 s stick-figure shorts ("Divine Lines" style), posted automatically at 9:00 PM IST. Finish one Purana before the next (order in the puranas-daily skill, `references/books.md`; now on the **Bhagavata Purana**). Long stories become 2-3 parts, one part per day. Success is not guaranteed; the owner knows.
 
