@@ -1,1 +1,1 @@
-2026-11-22T02:10:42.699784+05:30 EXIT: QUEUE EMPTY: no pending story in queue.json. Ask Claude to write the next batch of stories.
+2026-11-22T21:03:11.451816+05:30 FAILED: RuntimeError: [en] some platforms failed: {"youtube": "skipped (Zapier posts YouTube; no YT_* secrets set)", "facebook": "FAILED: No Instagram Business account is linked to this Facebook Page", "instagram": "FAILED: No Instagram Business account is linked to this Facebook Page"}
