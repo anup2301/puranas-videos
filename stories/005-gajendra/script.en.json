@@ -1,0 +1,58 @@
+{
+  "title": "The Elephant Who Stopped Pulling | Gajendra",
+  "voice": "bm_fable",
+  "speed": 0.98,
+  "lead": 0.4,
+  "outro": 1.0,
+  "gap": 0.32,
+  "music": "bed",
+  "sources": [
+    "Bhagavata Purana, Canto 8, chapters 2-4."
+  ],
+  "lines": [
+    {
+      "text": "What do you do when your own strength is not enough?",
+      "caps": "What do you do when | your own *strength | is *not enough?"
+    },
+    {
+      "text": "A huge elephant named Gajendra led his herd to a lake on Mount Trikuta. The day was hot.",
+      "caps": "*Gajendra | led his herd | to a *lake."
+    },
+    {
+      "text": "He drank, he bathed, he splashed his family. Then a crocodile bit his leg.",
+      "caps": "He *splashed his family. | Then a *crocodile | bit his leg."
+    },
+    {
+      "text": "He pulled. The crocodile pulled back. His family tried to help, but nobody could free him.",
+      "caps": "He *pulled. | It pulled *back. | Nobody could *free him."
+    },
+    {
+      "text": "The fight lasted a thousand years in this telling. In the water, the crocodile grew stronger. The elephant grew weak.",
+      "caps": "A *thousand years. | The crocodile grew *stronger. | He grew *weak."
+    },
+    {
+      "text": "Then Gajendra remembered a prayer from a past life, and stopped pulling.",
+      "caps": "A *prayer | from a *past life. | He *stopped pulling."
+    },
+    {
+      "text": "He lifted a lotus with his trunk and said: I surrender to the One behind everything.",
+      "caps": "A *lotus | in his trunk. | I *surrender."
+    },
+    {
+      "text": "The gods did not come. He had not called a god. He had called the One behind all gods.",
+      "caps": "The *gods did not come. | He called the *One | behind all gods."
+    },
+    {
+      "text": "Vishnu arrived on Garuda, so fast that his chakra was still in his hand. He lifted the elephant and the crocodile out of the lake.",
+      "caps": "Vishnu on *Garuda. | He *lifted them | out of the lake."
+    },
+    {
+      "text": "His chakra freed the elephant. The crocodile became a gandharva named Huhu, released from an old curse.",
+      "caps": "The *chakra spun. | The crocodile was *Huhu, | freed from a *curse."
+    },
+    {
+      "text": "Gajendra was once a king named Indradyumna, cursed by a sage. He did not win by strength. He won when he let go and called. Follow for more stories.",
+      "caps": "He did not win by *strength. | He won when he | *called out. | Follow for *more stories."
+    }
+  ]
+}

@@ -49,7 +49,7 @@ def stage_media(story, files, post_date):
     media.mkdir()
     meta = {'id': story['id'], 'date': post_date}
     for lang, (mp4, png) in files.items():
-        shutil.copy(mp4, media / f'latest-{lang}.mp4'); shutil.copy(png, media / f'thumb-{lang}.png')
+        subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', str(mp4), '-c:v', 'libx264', '-preset', 'slow', '-crf', '32', '-c:a', 'aac', '-b:a', '64k', '-movflags', '+faststart', str(media / f'latest-{lang}.mp4')], check=True); shutil.copy(png, media / f'thumb-{lang}.png')
         meta[lang] = {k: story[lang][k] for k in ('title', 'description', 'tags')}
         meta[lang]['video_url'] = f'{RAW}/media/latest-{lang}.mp4'; meta[lang]['thumbnail_url'] = f'{RAW}/media/thumb-{lang}.png'
     (media / 'latest.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1))
@@ -62,8 +62,8 @@ def staged():
     return json.loads(f.read_text()) if f.exists() else {}
 
 def next_post_date(after_posting):
-    """The IST date the Zap will upload this video: tomorrow if staged after the day's posting (evening), else today."""
-    now = dt.datetime.now(IST); d = now.date() + dt.timedelta(days=1) if (after_posting or now.hour >= 12) else now.date()
+    """The IST date the Zap will upload this video: tomorrow if staged after the day's posting or after 20:00 IST, else today (so a video staged in the afternoon is posted at 21:00 the same day)."""
+    now = dt.datetime.now(IST); d = now.date() + dt.timedelta(days=1) if (after_posting or now.hour >= 20) else now.date()
     return d.isoformat()
 
 def prepare(entry, q, langs, after_posting):
@@ -125,6 +125,7 @@ def run_logged():
 
 def write_log(note):
     import re
+    if '--story' in sys.argv or '--dry-run' in sys.argv: return
     note = re.sub(r'(access_token=|token[=:]\s*)[A-Za-z0-9_\-]{12,}', r'\1[hidden]', note)
     try:
         (ROOT / 'logs').mkdir(exist_ok=True); (ROOT / 'logs' / 'last_run.txt').write_text(note[:4000] + '\n')
