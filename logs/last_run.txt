@@ -1,1 +1,1 @@
-2026-11-23T02:21:05.438993+05:30 OK
+2026-11-23T12:02:12.235003+05:30 FAILED: RuntimeError: [en] some platforms failed: {"youtube": "skipped (Zapier posts YouTube; no YT_* secrets set)", "facebook": "FAILED: No Instagram Business account is linked to this Facebook Page", "instagram": "FAILED: No Instagram Business account is linked to this Facebook Page"}
