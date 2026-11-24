@@ -1,0 +1,58 @@
+{
+  "title": "Three Steps of Land | Vamana and Bali",
+  "voice": "bm_fable",
+  "speed": 0.98,
+  "lead": 0.4,
+  "outro": 1.0,
+  "gap": 0.32,
+  "music": "bed",
+  "sources": [
+    "Bhagavata Purana, Canto 8, chapters 15-22 (Bali's conquest, Aditi's prayer, Vamana at the sacrifice, the request for three paces, Shukracharya's warning, the gift of water, the two steps, Bali offering his head, Sutala)."
+  ],
+  "lines": [
+    {
+      "text": "What if the smallest request is the biggest one?",
+      "caps": "What if the *smallest request | is the *biggest one?"
+    },
+    {
+      "text": "King Bali, the grandson of Prahlada, conquered the heavens. The gods lost everything.",
+      "caps": "King *Bali | conquered the *heavens. | The gods lost *everything."
+    },
+    {
+      "text": "Vishnu came as Vamana, a small boy with an umbrella, to Bali's great sacrifice.",
+      "caps": "*Vishnu came | as a *small boy | with an umbrella."
+    },
+    {
+      "text": "Bali said: ask for anything. The boy said: just three steps of land, measured by my own feet.",
+      "caps": "Ask for *anything. | Just *three steps | of land."
+    },
+    {
+      "text": "Bali's teacher Shukracharya warned him: this boy is Vishnu. Do not promise.",
+      "caps": "His teacher warned: | this boy is *Vishnu. | Do not *promise."
+    },
+    {
+      "text": "But Bali had given his word. He poured the water, and made the promise.",
+      "caps": "But he had given his *word. | He poured the *water. | The *promise was made."
+    },
+    {
+      "text": "Vamana began to grow. And grow.",
+      "caps": "Vamana began to *grow. | And *grow."
+    },
+    {
+      "text": "His first step covered the whole earth. His second step covered the heavens.",
+      "caps": "The *first step | covered the *earth. | The *second | covered the *heavens."
+    },
+    {
+      "text": "There was no space left for a third step. Where should he place his foot?",
+      "caps": "No space left | for the *third step. | Where does the *foot go?"
+    },
+    {
+      "text": "Bali bowed his head and said: place it here. He kept his word, even at the cost of everything.",
+      "caps": "*Place it here. | He kept his *word, | even at the cost of *everything."
+    },
+    {
+      "text": "Vamana was pleased. He sent Bali to rule the land of Sutala, and promised to guard his gate. Follow for more stories.",
+      "caps": "Vamana was *pleased. | Bali ruled *Sutala. | Vishnu *guarded his gate. | Follow for *more stories."
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "title": "The Man Who Called His Son's Name | Ajamila",
+  "voice": "bm_fable",
+  "speed": 0.98,
+  "lead": 0.4,
+  "outro": 1.0,
+  "gap": 0.32,
+  "music": "bed",
+  "sources": [
+    "Bhagavata Purana, Canto 6, chapters 1-3 (Ajamila's fall, his son Narayana, the Yamadutas, the Vishnudutas, the discussion of the holy name, Ajamila's repentance and Haridwar)."
+  ],
+  "lines": [
+    {
+      "text": "He said one word at the end of his life. And it saved him.",
+      "caps": "One *word | at the *end of his life. | It *saved him."
+    },
+    {
+      "text": "Ajamila was a learned Brahmin who followed every rule. Then he fell into bad company and gave up his duties.",
+      "caps": "A *learned Brahmin | fell into *bad company | and gave up his *duties."
+    },
+    {
+      "text": "He lived that way for years. His youngest son was his favorite, a little boy named Narayana.",
+      "caps": "His favorite was his *youngest son, | a little boy named *Narayana."
+    },
+    {
+      "text": "At the end of his life, three terrifying Yamadutas came for him.",
+      "caps": "At the end, three *Yamadutas | came for *him."
+    },
+    {
+      "text": "Terrified, he called out for his child: Narayana!",
+      "caps": "Terrified, he called for his *child: | *Narayana!"
+    },
+    {
+      "text": "But Narayana is also a name of Vishnu. His attendants appeared at once.",
+      "caps": "But *Narayana | is also a name of *Vishnu. | His attendants *appeared."
+    },
+    {
+      "text": "They stopped the Yamadutas. You cannot take him. He has called that name.",
+      "caps": "*You cannot take him. | He called *that name."
+    },
+    {
+      "text": "The Yamadutas asked how a sinner could be spared. The Vishnudutas explained the power of the holy name.",
+      "caps": "How can a *sinner be spared? | The *holy name | has *power."
+    },
+    {
+      "text": "Ajamila heard everything. He felt deep regret for the life he had lived.",
+      "caps": "He heard it *all. | He felt deep *regret."
+    },
+    {
+      "text": "He went to Haridwar, gave up everything, and spent the rest of his life in devotion. At the end, he reached the abode of Vishnu.",
+      "caps": "He went to *Haridwar. | A life of *devotion. | At the end, *Vishnu's abode."
+    },
+    {
+      "text": "It is never too late to turn toward the good. Follow for more stories.",
+      "caps": "Never too *late | to turn toward the *good. | Follow for *more stories."
+    }
+  ]
+}
