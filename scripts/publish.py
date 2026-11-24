@@ -15,7 +15,6 @@ def ids(tok):
     ig = os.environ.get('IG_USER_ID')
     if not ig:
         ig = (call(f'{GRAPH}/{page}?fields=instagram_business_account&access_token={q}').get('instagram_business_account') or {}).get('id')
-        if not ig: raise RuntimeError('No Instagram Business account is linked to this Facebook Page')
     return page, ig
 
 def call(url, data=None, method=None):
@@ -37,6 +36,7 @@ def instagram(story, lang, meta):
     tok = os.environ.get('FB_PAGE_TOKEN')
     if not tok: raise RuntimeError('MISSING SECRET FB_PAGE_TOKEN (see SETUP.md step 3)')
     _, ig = ids(tok)
+    if not ig or os.environ.get('SKIP_INSTAGRAM'): return 'skipped (no Instagram linked or paused)'
     c = call(f'{GRAPH}/{ig}/media', {'media_type': 'REELS', 'video_url': meta['video_url'], 'caption': story[lang]['instagram'], 'share_to_feed': 'true', 'access_token': tok})['id']
     for _ in range(60):
         s = call(f'{GRAPH}/{c}?fields=status_code,status&access_token={urllib.parse.quote(tok)}')
