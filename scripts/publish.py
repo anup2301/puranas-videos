@@ -30,14 +30,27 @@ def facebook(story, lang, meta):
     if not tok: raise RuntimeError('MISSING SECRET FB_PAGE_TOKEN (see SETUP.md step 3)')
     page, _ = ids(tok)
     r = call(f'{GRAPH_VIDEO}/{page}/videos', {'file_url': meta['video_url'], 'title': meta['title'], 'description': story[lang]['facebook'], 'access_token': tok})
-    return r.get('id')
+    vid = r.get('id')
+    try: fb_thumbnail(vid, meta['thumbnail_url'], tok)
+    except Exception as e: print(f'[{lang}] facebook thumbnail not set: {e}', flush=True)
+    return vid
+
+def fb_thumbnail(vid, img_url, tok):
+    img = urllib.request.urlopen(img_url, timeout=60).read(); bd = 'puranasboundary'
+    parts = []
+    for k, v in (('is_preferred', 'true'), ('access_token', tok)):
+        parts.append(f'--{bd}\r\nContent-Disposition: form-data; name="{k}"\r\n\r\n{v}\r\n'.encode())
+    parts.append(f'--{bd}\r\nContent-Disposition: form-data; name="source"; filename="thumb.png"\r\nContent-Type: image/png\r\n\r\n'.encode() + img + b'\r\n')
+    parts.append(f'--{bd}--\r\n'.encode())
+    req = urllib.request.Request(f'{GRAPH}/{vid}/thumbnails', data=b''.join(parts), method='POST', headers={'Content-Type': f'multipart/form-data; boundary={bd}'})
+    urllib.request.urlopen(req, timeout=120).read()
 
 def instagram(story, lang, meta):
     tok = os.environ.get('FB_PAGE_TOKEN')
     if not tok: raise RuntimeError('MISSING SECRET FB_PAGE_TOKEN (see SETUP.md step 3)')
     _, ig = ids(tok)
     if not ig or os.environ.get('SKIP_INSTAGRAM'): return 'skipped (no Instagram linked or paused)'
-    c = call(f'{GRAPH}/{ig}/media', {'media_type': 'REELS', 'video_url': meta['video_url'], 'caption': story[lang]['instagram'], 'share_to_feed': 'true', 'access_token': tok})['id']
+    c = call(f'{GRAPH}/{ig}/media', {'media_type': 'REELS', 'video_url': meta['video_url'], 'caption': story[lang]['instagram'], 'share_to_feed': 'true', 'thumb_offset': '1500', 'access_token': tok})['id']
     for _ in range(60):
         s = call(f'{GRAPH}/{c}?fields=status_code,status&access_token={urllib.parse.quote(tok)}')
         print('instagram processing:', s.get('status_code'), flush=True)
