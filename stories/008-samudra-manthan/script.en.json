@@ -1,0 +1,58 @@
+{
+  "title": "The Poison That Came Before the Nectar | Samudra Manthan",
+  "voice": "bm_fable",
+  "speed": 0.98,
+  "lead": 0.4,
+  "outro": 1.0,
+  "gap": 0.32,
+  "music": "bed",
+  "sources": [
+    "Bhagavata Purana, Canto 8, chapters 5-9."
+  ],
+  "lines": [
+    {
+      "text": "Even the gods can lose all their power. This is how they got it back.",
+      "caps": "Even the *gods | can lose *all their power. | This is how they got it *back."
+    },
+    {
+      "text": "A sage's curse drained the gods of their strength, and the demons took over the heavens.",
+      "caps": "A sage's *curse | drained their *strength. | The *demons took the heavens."
+    },
+    {
+      "text": "Vishnu told them: make peace with the demons for now, and churn the ocean of milk. It will give you amrita, the nectar of immortality.",
+      "caps": "*Churn the ocean. | It will give you *amrita, | the nectar of *immortality."
+    },
+    {
+      "text": "Mount Mandara became the churning rod, and the serpent Vasuki became the rope. The gods held the tail. The demons held the head.",
+      "caps": "*Mount Mandara | became the *rod. | The serpent *Vasuki | became the *rope."
+    },
+    {
+      "text": "But the mountain began to sink. So Vishnu became a giant tortoise and held it on his back.",
+      "caps": "The mountain began to *sink. | Vishnu became a *giant tortoise."
+    },
+    {
+      "text": "The churning shook the whole ocean. And the first thing to rise was a terrible poison.",
+      "caps": "The ocean *shook. | The first thing to rise | was a terrible *poison."
+    },
+    {
+      "text": "Everyone ran in fear. Shiva drank the poison and held it in his throat, which turned blue.",
+      "caps": "Everyone *ran. | *Shiva drank the poison. | His throat turned *blue."
+    },
+    {
+      "text": "The churning went on. Wonders rose from the waves: a divine cow, a white elephant, a horse, and the goddess Lakshmi, who chose Vishnu.",
+      "caps": "*Wonders rose | from the waves. | *Lakshmi | chose *Vishnu."
+    },
+    {
+      "text": "At last Dhanvantari appeared, holding a pot of amrita.",
+      "caps": "At last, *Dhanvantari | appeared with the *amrita."
+    },
+    {
+      "text": "The demons grabbed it. But Vishnu, as the enchantress Mohini, tricked them, and the gods drank the nectar.",
+      "caps": "The demons *grabbed it. | *Mohini tricked them. | The gods *drank."
+    },
+    {
+      "text": "Patience and teamwork turned a curse into victory. Follow for more stories.",
+      "caps": "*Patience and teamwork | turned a *curse | into *victory. | Follow for *more stories."
+    }
+  ]
+}
