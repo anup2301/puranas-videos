@@ -1,0 +1,58 @@
+{
+  "title": "The Fish That Kept Growing | Matsya and Manu",
+  "voice": "bm_fable",
+  "speed": 0.98,
+  "lead": 0.4,
+  "outro": 1.0,
+  "gap": 0.32,
+  "music": "bed",
+  "sources": [
+    "Bhagavata Purana, Canto 8, chapter 24."
+  ],
+  "lines": [
+    {
+      "text": "A tiny fish begged a king to save it. That fish was God.",
+      "caps": "A tiny *fish | begged a *king to save it. | That fish was *God."
+    },
+    {
+      "text": "King Satyavrata was offering water to the gods in a river, when a small fish swam into his hands.",
+      "caps": "King *Satyavrata | offered water in a *river. | A *small fish swam into his hands."
+    },
+    {
+      "text": "The fish said: save me from the bigger fish. The king took pity and put it in a small pot.",
+      "caps": "*Save me | from the bigger fish. | He put it in a *small pot."
+    },
+    {
+      "text": "But the fish kept growing. The pot was too small, so he moved it to a pond, then a lake, then a river, then the sea.",
+      "caps": "It kept *growing. | A *pond. A *lake. | A *river. The *sea."
+    },
+    {
+      "text": "The king understood this was no ordinary fish. He bowed and asked: who are you?",
+      "caps": "This was no *ordinary fish. | He *bowed and asked: | who are *you?"
+    },
+    {
+      "text": "Vishnu, as a giant golden fish, said: in seven days the world will drown in a flood.",
+      "caps": "*Vishnu | as a golden fish: | in *seven days | the world will *drown."
+    },
+    {
+      "text": "A great boat will come. Load it with seeds, herbs, animals, and the seven sages.",
+      "caps": "A great *boat will come. | Load *seeds, herbs, | animals and the *seven sages."
+    },
+    {
+      "text": "When the flood came, the boat appeared. The king tied it to the fish's horn, using the serpent Vasuki as a rope.",
+      "caps": "The *flood came. | He tied the boat | to the *horn, | with *Vasuki as the rope."
+    },
+    {
+      "text": "Through the dark waters, the fish pulled the boat, and taught the king deep wisdom as they travelled.",
+      "caps": "Through the dark *waters, | the fish *pulled the boat | and taught *wisdom."
+    },
+    {
+      "text": "He also destroyed the demon Hayagriva, who had stolen the sacred Vedas, and brought them back.",
+      "caps": "He destroyed *Hayagriva, | who *stole the Vedas, | and brought them *back."
+    },
+    {
+      "text": "The king became Manu, the father of a new age. Follow for more stories.",
+      "caps": "The king became *Manu, | father of a *new age. | Follow for *more stories."
+    }
+  ]
+}
